@@ -1,0 +1,76 @@
+.main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.indexicon {
+    margin: 40px;
+    font-family: cursive;
+}
+.card {
+    margin: 60px;
+    width: 350px;
+}
+.inputbox {
+    width: 310px;
+    height: auto;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #CCC;
+    background: #FFF;
+    outline: none;
+    color: var #000;
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.grayborder {
+    border: 1px solid #DBDBDB;
+}
+.form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+}
+.form input {
+    border: none;
+    outline: none;
+}
+.container{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mt20{
+    margin-top: 20px;
+}
+.mb20{
+    margin-bottom: 20px;
+}
+.btn{
+    width: 310px;
+    height: 30px;
+    background-color: #45a2df;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: white;
+    cursor: pointer;
+}
+.btn:hover{
+    background-color: #62acde;
+}
