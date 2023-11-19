@@ -3,6 +3,7 @@ import styles from "@/app/chats/chatPage.module.scss"
 import classnames from 'classnames';
 import { AuthContext } from '@/context/AuthContext';
 import { ChatContext } from '@/context/ChatContext';
+import Link from 'next/link';
 
 const Message = ({message}) => {
     const {user} = useContext(AuthContext);
@@ -29,14 +30,21 @@ const Message = ({message}) => {
                                 : data.member[message.senderId]?.userInfo.photoURL } 
                         alt="" 
                     />
-                    {data.chatroomInfo.type==="group" && <span>{data.member[message.senderId]?.userInfo.displayName}</span>}
+                    {data.chatroomInfo.type==="group" && <span>{message.senderId !== user.uid && data.member[message.senderId]?.userInfo.displayName}</span>}
                 </div>
                 <div className={styles.messageContent}>
                     {message.text && <p>{message.text}</p>}
-                    {message.img && <img src={message.img} alt="" />}
+                    {message.img && <><img src={message.img} alt="" onClick={()=>window.open(message.img)} /></>}
+                    {message.file && 
+                    <>
+                        <p>
+                            <img src="/report.png" alt="" />
+                            <Link href={message.file} target="_blank">{message.filename}</Link>
+                        </p>
+                    </>}
                 </div>
                 <div className={styles.messageTime}>
-                    <span>{message.date.toDate().toLocaleTimeString('en-US')}</span>
+                    <span>{message.date.toDate().toLocaleString()}</span>
                 </div>
             </div>
             }
