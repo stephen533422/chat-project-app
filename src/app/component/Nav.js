@@ -2,7 +2,7 @@
 import React, { useContext, useEffect } from "react";
 import Logout from "@/firebase/auth/signout";
 import classNames from "classnames";
-import styles from '@/app/chats/chatPage.module.scss';
+import styles from '@/app/component/nav.module.scss';
 import Link  from 'next/link';
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,7 @@ function Nav() {
                 <div className={classNames(styles.indexicon)}>
                     <h2>InstantChat</h2>
                 </div>
-                {user && <div className={styles.navUser}>
+                {user && <div className={styles.navUser} onClick={()=>router.push("profile")}>
                     <img src={user.photoURL?user.photoURL:"/user.png"}></img>
                     <span>{user.displayName}</span>
                 </div>}
