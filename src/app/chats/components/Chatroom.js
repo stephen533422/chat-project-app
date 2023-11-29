@@ -18,7 +18,7 @@ export default function  Chatroom()  {
   }
 
   return (
-    <div className={styles.chatroom}>
+    <div className={styles.chatroom} key={data.chatId}>
         <ChatroomBar />
         <ChatroomContent />
         <ChatroomInput />
