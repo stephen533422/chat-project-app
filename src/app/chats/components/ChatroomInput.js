@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "@/app/chats/chatPage.module.scss"
 import { AuthContext } from "@/context/AuthContext";
 import { ChatContext } from "@/context/ChatContext";
@@ -11,10 +11,74 @@ export default function  ChatroomInput()  {
     const [text, setText] = useState("");
     const [file, setFile] = useState(null);
     const [filename, setFilename] = useState("");
+
     const refPreview = useRef();
+    const refDragDrop = useRef();
 
     const {user} = useContext(AuthContext);
     const {data} = useContext(ChatContext);
+
+    useEffect(()=>{
+        const el = refDragDrop.current;
+        el.addEventListener('dragover', handleDragOver);
+        el.addEventListener('drop', handleDrop);
+        el.addEventListener('dragenter', handleDragEnter);
+        el.addEventListener('dragleave', handleDragLeave);
+
+        return () => {
+            el.removeEventListener('dragover', handleDragOver);
+            el.removeEventListener('drop', handleDrop);
+            el.removeEventListener('dragenter', handleDragEnter);
+            el.removeEventListener('dragleave', handleDragLeave);
+        };
+    },);
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("dragover");
+        refDragDrop.current.style.backgroundColor = "lightgray";
+        refDragDrop.current.children[0].style.display="flex";
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("drop");
+        console.log(e.dataTransfer.files[0]);
+
+        setFile(e.dataTransfer.files[0]);
+        setFilename(e.dataTransfer.files[0].name);
+
+        if(e.dataTransfer.files[0].type.includes("image")){
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+              
+              refPreview.current.children[0].src = e.target.result;
+              refPreview.current.style.display='flex';
+             };
+            reader.readAsDataURL(e.dataTransfer.files[0]);
+        }
+        else{
+            refPreview.current.children[0].src = "/file.png";
+            refPreview.current.style.display='flex';
+        }
+        refDragDrop.current.style.backgroundColor = "transparent";
+        refDragDrop.current.children[0].style.display = "none";
+    };
+
+    const handleDragEnter = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("dragenter");
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("dragleave");
+    };
+
 
     const handleSend = async()=>{
         console.log("data",data);
@@ -151,25 +215,28 @@ export default function  ChatroomInput()  {
 
     return (
         <div className={styles.chatroominput}>
-            <div className={styles.inputbox}>
-                <input 
-                    type="text" 
-                    placeholder='Type something...'
-                    onChange={e=>setText(e.target.value)}
-                    value={text} 
-                />
-                <div className={styles.previewbox} ref={refPreview}>
-                    <img></img>
-                    <span>{filename}</span>
-                    <button onClick={handleCancel}>X</button>
+            <div className={styles.dragdrop} ref={refDragDrop}>
+                <div className={styles.dragmessage}>拖曳檔案至此</div>
+                <div className={styles.inputbox} >
+                    <input 
+                        type="text" 
+                        placeholder='Type something...'
+                        onChange={e=>setText(e.target.value)}
+                        value={text} 
+                    />
+                    <div className={styles.previewbox} ref={refPreview}>
+                        <img></img>
+                        <span>{filename}</span>
+                        <button onClick={handleCancel}>X</button>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.send}>
-                <input type="file" style={{display: "none"}} id="file" onChange={handleUpload}/>
-                <label htmlFor="file">
-                    <img src="/attach.png" alt="" />
-                </label>
-                <button onClick={handleSend}>Send</button>
+                <div className={styles.send}>
+                    <input type="file" style={{display: "none"}} id="file" onChange={handleUpload}/>
+                    <label htmlFor="file">
+                        <img src="/attach.png" alt="" />
+                    </label>
+                    <button onClick={handleSend}>Send</button>
+                </div>
             </div>
         </div>
     );

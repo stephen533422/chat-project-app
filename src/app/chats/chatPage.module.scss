@@ -259,76 +259,95 @@
             .chatroominput {
                 //height: 90px;
                 background-color: white;
-                padding: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 flex: 1 0 90px;
-                .inputbox {
+                
+                .dragdrop {
                   height: 100%;
                   width: 100%;
                   display: flex;
-                  gap: 10px;
-                  flex-direction: column;
-                  input {
-                    width: 100%;
-                    border: none;
-                    outline: none;
-                    color: #000000;
-                    font-size: 18px;
-                    background-color: transparent;
+                  align-items: center;
+                  justify-content: space-between;
+                  position: relative;
 
-                    &::placeholder {
-                      color: lightgray;
-                    }
-                  }
-                  .previewbox {
+                  .dragmessage{
+                    position: absolute;
+                    top: 20px;
+                    left: 20px;
+                    color: gray;
                     display: none;
-                    align-items: center;
+                  }
+
+                  .inputbox {
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
                     gap: 10px;
-                    img {
-                      width: 60px;
-                      height: 60px;
-                      object-fit: cover;
-                      border-radius: 10px;
-                    }
-                    span {
-                      font-weight: 300;
-                      font-size: 13px;
-                      color: rgb(80, 80, 80);
-                    }
-                    button {
-                      width: 20px;
-                      height: 20px;
-                      background-color: #45a2df;
-                      border-radius: 5px;
+                    flex-direction: column;
+                    padding: 20px 20px 20px 20px;
+  
+                    input {
+                      width: 100%;
                       border: none;
                       outline: none;
-                      color: white;
-                      cursor: pointer;
-                      &:hover{
-                        background-color: #62acde;
+                      color: #000000;
+                      font-size: 18px;
+                      background-color: transparent;
+  
+                      &::placeholder {
+                        color: lightgray;
+                      }
+                    }
+                    .previewbox {
+                      display: none;
+                      align-items: center;
+                      gap: 10px;
+                      img {
+                        width: 60px;
+                        height: 60px;
+                        object-fit: cover;
+                        border-radius: 10px;
+                      }
+                      span {
+                        font-weight: 300;
+                        font-size: 13px;
+                        color: rgb(80, 80, 80);
+                      }
+                      button {
+                        width: 20px;
+                        height: 20px;
+                        background-color: #45a2df;
+                        border-radius: 5px;
+                        border: none;
+                        outline: none;
+                        color: white;
+                        cursor: pointer;
+                        &:hover{
+                          background-color: #62acde;
+                        }
+                      } 
                     }
                   }
-                  }
-                }
-        
-                .send {
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
-        
-                  img {
-                    height: 24px;
-                    cursor: pointer;
-                  }
-        
-                  button {
-                    border: none;
-                    padding: 10px 15px;
-                    color: white;
-                    background-color: #45a2df;
-                    cursor: pointer;
+                  .send {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding-right: 20px;
+          
+                    img {
+                      height: 24px;
+                      cursor: pointer;
+                    }
+          
+                    button {
+                      border: none;
+                      padding: 10px 15px;
+                      color: white;
+                      background-color: #45a2df;
+                      cursor: pointer;
+                    }
                   }
                 }
               }
