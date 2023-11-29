@@ -6,6 +6,7 @@ import { db } from "@/firebase/config";
 import { FriendContext } from "@/context/FriendContext";
 import {v4 as uuid} from "uuid";
 import { useRouter } from "next/navigation";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function  Friendlist()  {
     const [friendlist, setFriendlist] = useState([]);
@@ -35,7 +36,7 @@ export default function  Friendlist()  {
     const handleStartChat = async(friend) =>{
             // check whether the group (chats in firestore) exists, if not: create
             const  chatroomId = friend.chatroomId? friend.chatroomId : uuid();
-            console.log("friend:", friend);
+            // console.log("friend:", friend);
             try{
                 const res = await getDoc(doc(db, "chats", chatroomId));
                 console.log("res:",res);
@@ -122,7 +123,11 @@ export default function  Friendlist()  {
                 console.log("friend: ",chat);
                 return (
                     <div className={styles.chat} key={chat[0]} >
-                        <img className={styles.image} src={chat[1].userInfo.photoURL?chat[1].userInfo.photoURL:"/user.png"} />
+                        <LazyLoadImage 
+                            src={chat[1].userInfo.photoURL?chat[1].userInfo.photoURL:"/user.png"}  
+                            effect='opacity' 
+                            alt="Image"
+                        />
                         <div className={styles.chatInfo}>
                             <span>{chat[1].userInfo.displayName}</span>
                         </div>

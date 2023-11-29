@@ -8,6 +8,7 @@ import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/firebase/config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
 function Page() {
@@ -105,7 +106,13 @@ function Page() {
 
                     <div className={styles.profilePage}>
                         <div className={styles.background}>
-                            <img src={userdata.backgroundURL?userdata.backgroundURL:"/background.jpg"}/>
+                            <LazyLoadImage 
+                                src={userdata.backgroundURL?userdata.backgroundURL:"/gray.jpg"} 
+                                effect='opacity' 
+                                wrapperProps={{
+                                    style: {display: "inline"},
+                                }} 
+                                alt="Image"/>
                             <div className={styles.edit}>
                                 <input type="file" style={{display: "none"}} id="background" onChange={(e)=>handleEdit(e,"background")}/>
                                 <label htmlFor="background">編輯</label>
@@ -114,7 +121,7 @@ function Page() {
                         </div>
                         <div className={styles.userbox}>
                             <div className={styles.avatar}>
-                                <img src={userdata.photoURL?userdata.photoURL:"/user.png"}/>
+                                <LazyLoadImage src={userdata.photoURL?userdata.photoURL:"/user.png"} height={168} width={168} effect='opacity' alt="Image" />
                                 <div className={styles.edit}>
                                     <input type="file" style={{display: "none"}} id="avastar" onChange={(e)=>handleEdit(e,"avastar")}/>
                                     <label htmlFor="avastar">編輯</label>

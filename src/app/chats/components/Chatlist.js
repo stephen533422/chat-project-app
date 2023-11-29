@@ -4,6 +4,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { ChatContext } from "@/context/ChatContext";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function  Chatlist()  {
     const [chatlists, setChatlists] = useState([]);
@@ -46,13 +47,14 @@ export default function  Chatlist()  {
                 console.log("Chats.js chat: ",chat);
                 return (
                     <div className={styles.chat} key={chat[0]} onClick={()=>handleSelect(chat[1])}>
-                        <img 
-                            className={styles.image} 
+                        <LazyLoadImage 
                             src={chat[1].chatroomInfo.photoURL 
-                                    ?chat[1].chatroomInfo.photoURL 
-                                    : chat[1].chatroomInfo.type === "group"
-                                        ? "/groupPhoto.png"
-                                        : "/user.png"} 
+                                ?chat[1].chatroomInfo.photoURL 
+                                : chat[1].chatroomInfo.type === "group"
+                                    ? "/groupPhoto.png"
+                                    : "/user.png"}  
+                            effect='opacity' 
+                            alt="Image"
                         />
                         <div className={styles.chatInfo}>
                             <span>{chat[1].chatroomInfo.displayName}</span>
