@@ -5,6 +5,7 @@ import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, serverTime
 import { db } from "@/firebase/config";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
+import { UsersContext } from "@/context/UsersContext";
 
 export default function CreateGroupChat()  {
     const [chatname, setChatname] = useState("");
@@ -12,6 +13,7 @@ export default function CreateGroupChat()  {
     const [err, setErr] = useState(false);
 
     const {user} = useContext(AuthContext);
+    const {users} = useContext(UsersContext);
     const ref = useRef();
 
     useEffect(() => {
@@ -121,14 +123,14 @@ export default function CreateGroupChat()  {
                     </button>
                 </div>
                 <div ref={ref} className={styles.chatlist} style={{display: "none"}}>
-                    {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(chat=>{
+                    {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
                         //console.log("friend: ",chat);
                         return (              
-                            <div className={styles.chat} key={chat[0]} >
-                                <input type="checkbox" data-uid={chat[1].userInfo.uid} data-email={chat[1].userInfo.email} data-name={chat[1].userInfo.displayName} data-photo={chat[1].userInfo.photoURL}></input>
-                                <img className={styles.image} src={chat[1].userInfo.photoURL?chat[1].userInfo.photoURL:"/user.png"} />
+                            <div className={styles.chat} key={friend[0]} >
+                                <input type="checkbox" data-uid={users[friend[0]].uid} data-email={users[friend[0]].email} data-name={users[friend[0]].displayName} data-photo={users[friend[0]].photoURL}></input>
+                                <img className={styles.image} src={users[friend[0]].photoURL? users[friend[0]].photoURL: "/user.png"} />
                                 <div className={styles.chatInfo}>
-                                    <span>{chat[1].userInfo.displayName}</span>
+                                    <span>{users[friend[0]].displayName}</span>
                                 </div>
                                 
                             </div>

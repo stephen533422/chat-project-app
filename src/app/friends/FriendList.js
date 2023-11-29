@@ -7,12 +7,14 @@ import { FriendContext } from "@/context/FriendContext";
 import {v4 as uuid} from "uuid";
 import { useRouter } from "next/navigation";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { UsersContext } from "@/context/UsersContext";
 
 export default function  Friendlist()  {
     const [friendlist, setFriendlist] = useState([]);
 
     const {user} = useContext(AuthContext);
     const {dispatch} = useContext(FriendContext);
+    const {users} = useContext(UsersContext);
     
     const router = useRouter();
 
@@ -119,19 +121,22 @@ export default function  Friendlist()  {
     console.log("friendlist:",friendlist);
     return (
         <div className={styles.chatlist}>
-            {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(chat=>{
-                console.log("friend: ",chat);
+            {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
+                console.log("friend: ",friend);
                 return (
-                    <div className={styles.chat} key={chat[0]} >
+                    <div className={styles.chat} key={friend[0]} >
                         <LazyLoadImage 
-                            src={chat[1].userInfo.photoURL?chat[1].userInfo.photoURL:"/user.png"}  
+                            src={users && users[friend[0]].photoURL}
+                            placeholderSrc="/user.png"
+                            height={50}
+                            width={50}
                             effect='opacity' 
                             alt="Image"
                         />
                         <div className={styles.chatInfo}>
-                            <span>{chat[1].userInfo.displayName}</span>
+                            <span>{users[friend[0]].displayName}</span>
                         </div>
-                        <button onClick={()=>handleStartChat(chat[1])}>開始聊天</button>
+                        <button onClick={()=>handleStartChat(friend[1])}>開始聊天</button>
                     </div>
                 );
             })}

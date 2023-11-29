@@ -5,12 +5,14 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { ChatContext } from "@/context/ChatContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { UsersContext } from "@/context/UsersContext";
 
 export default function  Chatlist()  {
     const [chatlists, setChatlists] = useState([]);
 
     const {user} = useContext(AuthContext);
     const {dispatch} = useContext(ChatContext);
+    const {users} = useContext(UsersContext);
 
     useEffect(() => {
         const getChatlists = ()=>{
@@ -47,15 +49,26 @@ export default function  Chatlist()  {
                 console.log("Chats.js chat: ",chat);
                 return (
                     <div className={styles.chat} key={chat[0]} onClick={()=>handleSelect(chat[1])}>
-                        <LazyLoadImage 
-                            src={chat[1].chatroomInfo.photoURL 
-                                ?chat[1].chatroomInfo.photoURL 
-                                : chat[1].chatroomInfo.type === "group"
-                                    ? "/groupPhoto.png"
-                                    : "/user.png"}  
-                            effect='opacity' 
-                            alt="Image"
-                        />
+                        {chat[1].chatroomInfo.type === "group" && 
+                            <LazyLoadImage 
+                                src={chat[1].chatroomInfo.photoURL}
+                                placeholderSrc="/groupPhoto.png"
+                                height={50}
+                                width={50}
+                                effect='opacity' 
+                                alt="Image"
+                            />
+                        }
+                        {chat[1].chatroomInfo.type === "private" &&
+                            <LazyLoadImage
+                                src={users[Object.keys(chat[1].member)[0]].photoURL}
+                                placeholderSrc="/user.png"
+                                height={50}
+                                width={50}
+                                effect='opacity' 
+                                alt="Image"
+                            />
+                        }
                         <div className={styles.chatInfo}>
                             <span>{chat[1].chatroomInfo.displayName}</span>
                             <p>{chat[1].lastMessage?.text}</p>

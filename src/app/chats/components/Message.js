@@ -5,10 +5,12 @@ import { AuthContext } from '@/context/AuthContext';
 import { ChatContext } from '@/context/ChatContext';
 import Link from 'next/link';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { UsersContext } from '@/context/UsersContext';
 
 const Message = ({message}) => {
     const {user} = useContext(AuthContext);
     const {data} = useContext(ChatContext);
+    const {users} = useContext(UsersContext);
 
     const ref = useRef();
 
@@ -28,10 +30,16 @@ const Message = ({message}) => {
                     <LazyLoadImage 
                         src={message.senderId === user.uid 
                                 ? user.photoURL
-                                : data.member[message.senderId]?.userInfo.photoURL}  
+                                : users[message.senderId].photoURL}
+                        placeholderSrc='/user.png'
+                        height={40}
+                        width={40}
                         effect='opacity' 
                         alt="Image"/>
-                    {data.chatroomInfo.type==="group" && <span>{message.senderId !== user.uid && data.member[message.senderId]?.userInfo.displayName}</span>}
+                    {data.chatroomInfo.type==="group" && 
+                        <span>
+                            {message.senderId !== user.uid && users[message.senderId].displayName}
+                        </span>}
                 </div>
                 <div className={styles.messageContent}>
                     {message.text && <p>{message.text}</p>}

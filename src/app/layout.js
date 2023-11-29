@@ -3,6 +3,7 @@ import { ChatContextProvider } from '@/context/ChatContext';
 import './globals.css';
 import { AuthContextProvider } from '@/context/AuthContext';
 import { FriendContextProvider } from '@/context/FriendContext';
+import { UsersContextProvider } from '@/context/UsersContext';
 
 export default function RootLayout({ children }) {
   return (
@@ -13,11 +14,13 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <AuthContextProvider>
+          <UsersContextProvider>
           <FriendContextProvider>
           <ChatContextProvider>
             {children}
           </ChatContextProvider>
           </FriendContextProvider>
+          </UsersContextProvider>
         </AuthContextProvider>
       </body>
     </html>
