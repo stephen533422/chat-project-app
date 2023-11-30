@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "@/app/chats/chatPage.module.scss"
 import { AuthContext } from "@/context/AuthContext";
-import { doc, onSnapshot } from "firebase/firestore";
+import { Timestamp, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { ChatContext } from "@/context/ChatContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -29,9 +29,22 @@ export default function  Chatlist()  {
         user.uid && getChatlists();
     },[user]);
 
-    const handleSelect = (u)=>{
+    const handleSelect = async(u)=>{
         // console.log("u",u);
+        const date=Timestamp.now();
         dispatch({type:"CHANGE_USER", payload: u});
+        await updateDoc(doc(db, "userChats", user.uid),{
+            [u.chatroomInfo.uid+".readDate"]: date,
+            [u.chatroomInfo.uid+".unreadCount"]: 0,
+        });
+        Object.entries(u.member).forEach(async (obj)=>{
+            if(obj[1].userInfo.uid !== user.uid){
+                await updateDoc(doc(db, "userChats", obj[1].userInfo.uid),{
+                    [u.chatroomInfo.uid+".member."+user.uid+".readDate"]: date,
+                });
+            }
+        });
+        //
     }
     console.log("chatlists:", chatlists);
 
@@ -72,6 +85,10 @@ export default function  Chatlist()  {
                         <div className={styles.chatInfo}>
                             <span>{chat[1].chatroomInfo.displayName}</span>
                             <p>{chat[1].lastMessage?.text}</p>
+                            {chat[1].unreadCount === 0 
+                                    ? chat[1].lastMessage && <p>{chat[1].date.toDate().toLocaleString()}</p>
+                                    : chat[1].lastMessage && <p>{chat[1].unreadCount}</p>
+                            }
                         </div>
                     </div>
                 );

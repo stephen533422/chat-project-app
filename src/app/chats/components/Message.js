@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from "@/app/chats/chatPage.module.scss"
 import classnames from 'classnames';
 import { AuthContext } from '@/context/AuthContext';
@@ -11,11 +11,21 @@ const Message = ({message}) => {
     const {user} = useContext(AuthContext);
     const {data} = useContext(ChatContext);
     const {users} = useContext(UsersContext);
+    const [ count, setCount ] = useState(0);
+    console.log("count: ", count);
 
     const ref = useRef();
 
     useEffect(() => {
         // console.log(ref.current);
+        let newCount = 0;
+        Object.entries(data.member).map((arr)=>{
+            if(arr[1].readDate > message.date){
+                newCount=newCount+1;
+                setCount(newCount);
+            }
+        })
+        console.log("count: ",count);
         ref.current?.scrollIntoView({ behavior: 'auto' });
     },[message]);
     // console.log(data);
@@ -53,6 +63,19 @@ const Message = ({message}) => {
                     </>}
                 </div>
                 <div className={styles.messageTime}>
+                    {data.chatroomInfo.type==="private" && message.senderId === user.uid &&
+                        <span>
+                            {Object.entries(data.member)[0][1].readDate > message.date 
+                                ? "已讀"
+                                : "未讀"
+                            }
+                        </span>
+                    }
+                    {data.chatroomInfo.type==="group" && message.senderId === user.uid &&
+                        <span>
+                            {"已讀 "+count}
+                        </span>
+                    }
                     <span>{message.date.toDate().toLocaleString()}</span>
                 </div>
             </div>
