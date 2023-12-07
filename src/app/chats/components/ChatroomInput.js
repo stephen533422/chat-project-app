@@ -107,7 +107,7 @@ export default function  ChatroomInput()  {
             await updateDoc(doc(db, "userChats", user.uid),{
                 [data.chatId+".lastMessage"]: {text:"你傳送了圖片"},
                 [data.chatId+".date"]: date,
-                [data.chatId+"readDate"]: date,
+                [data.chatId+".readDate"]: date,
                 [data.chatId+".unreadCount"]: 0,
             });
 

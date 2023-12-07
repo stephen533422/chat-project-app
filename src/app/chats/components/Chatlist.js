@@ -6,6 +6,7 @@ import { db } from "@/firebase/config";
 import { ChatContext } from "@/context/ChatContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { UsersContext } from "@/context/UsersContext";
+import classnames from "classnames";
 
 export default function  Chatlist()  {
     const [chatlists, setChatlists] = useState([]);
@@ -17,7 +18,7 @@ export default function  Chatlist()  {
     useEffect(() => {
         const getChatlists = ()=>{
         const unsub = onSnapshot(doc(db, "userChats", user.uid), (doc) => {
-            console.log(doc.data());
+            // console.log(doc.data());
             setChatlists(Object.entries(doc.data())?.sort((a,b)=>b[1].date - a[1].date));
         });
 
@@ -46,7 +47,7 @@ export default function  Chatlist()  {
         });
         //
     }
-    console.log("chatlists:", chatlists);
+    // console.log("chatlists:", chatlists);
 
     if(chatlists && Object.keys(chatlists).length===0){
         return(
@@ -59,15 +60,13 @@ export default function  Chatlist()  {
     return (
         <div className={styles.chatlist}>
             {chatlists && chatlists?.map(chat=>{
-                console.log("Chats.js chat: ",chat);
+                // console.log("Chats.js chat: ",chat);
                 return (
                     <div className={styles.chat} key={chat[0]} onClick={()=>handleSelect(chat[1])}>
                         {chat[1].chatroomInfo.type === "group" && 
                             <LazyLoadImage 
                                 src={chat[1].chatroomInfo.photoURL}
                                 placeholderSrc="/groupPhoto.png"
-                                height={50}
-                                width={50}
                                 effect='opacity' 
                                 alt="Image"
                             />
@@ -76,19 +75,19 @@ export default function  Chatlist()  {
                             <LazyLoadImage
                                 src={users[Object.keys(chat[1].member)[0]].photoURL}
                                 placeholderSrc="/user.png"
-                                height={50}
-                                width={50}
                                 effect='opacity' 
                                 alt="Image"
                             />
                         }
                         <div className={styles.chatInfo}>
-                            <span>{chat[1].chatroomInfo.displayName}</span>
-                            <p>{chat[1].lastMessage?.text}</p>
-                            {chat[1].unreadCount === 0 
-                                    ? chat[1].lastMessage && <p>{chat[1].date.toDate().toLocaleString()}</p>
-                                    : chat[1].lastMessage && <p>{chat[1].unreadCount}</p>
-                            }
+                            <div className={classnames(chat[1].unreadCount!==0 && styles.unread,styles.name)}>
+                                {chat[1].chatroomInfo.displayName}
+                            </div>
+                            <div className={styles.info}>
+                                <span className={classnames(chat[1].unreadCount!==0 && styles.unread, styles.text)}>{chat[1].lastMessage?.text}</span>
+                                {chat[1].lastMessage && <span>{" · " + chat[1].date.toDate().toLocaleString()}</span>}
+                            </div>
+                            {chat[1].unreadCount !== 0  && chat[1].lastMessage && <div className={styles.unreadCount}>{chat[1].unreadCount}</div>}
                         </div>
                     </div>
                 );

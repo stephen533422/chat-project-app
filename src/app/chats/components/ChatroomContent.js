@@ -24,7 +24,7 @@ export default function  ChatroomContent()  {
   return (
         <div className={styles.chatroomcontent}>
             {messages.map(m=>(
-                <Message message={m} key={uuid()}/>
+                <Message message={m} key={m.id}/>
             ))}
         </div>
   );

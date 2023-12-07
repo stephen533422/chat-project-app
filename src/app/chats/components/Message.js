@@ -53,7 +53,15 @@ const Message = ({message}) => {
                 </div>
                 <div className={styles.messageContent}>
                     {message.text && <p>{message.text}</p>}
-                    {message.img && <LazyLoadImage src={message.img} height={200} effect='opacity' alt="Image" onClick={()=>window.open(message.img)} />}
+                    {message.img && <LazyLoadImage 
+                                        src={message.img} 
+                                        effect='opacity' 
+                                        alt="Image" 
+                                        height={150}
+                                        wrapperProps={{
+                                            style: {display: "flex"},
+                                        }}
+                                        onClick={()=>window.open(message.img)} />}
                     {message.file && 
                     <>
                         <p>
@@ -76,7 +84,7 @@ const Message = ({message}) => {
                             {"已讀 "+count}
                         </span>
                     }
-                    <span>{message.date.toDate().toLocaleString()}</span>
+                    <span className={styles.time}>{message.date.toDate().toLocaleString()}</span>
                 </div>
             </div>
             }
