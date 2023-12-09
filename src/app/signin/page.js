@@ -40,13 +40,13 @@ export default function Page() {
                     <div className={styles.inputbox}>
                         <label htmlFor="email">
                             <p>Email</p>
-                            <input onChange={(e) => setEmail(e.target.value)} required type="email" name="email" id="email" placeholder="example@mail.com" />
+                            <input onChange={(e) => setEmail(e.target.value)} value={email} required type="email" name="email" id="email" placeholder="example@mail.com" />
                         </label>
                     </div>
                     <div className={styles.inputbox}>
                     <label htmlFor="password">
                         <p>Password</p>
-                        <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" placeholder="password" />
+                        <input onChange={(e) => setPassword(e.target.value)} value={password} required type="password" name="password" id="password" placeholder="password" />
                     </label>
                     </div>
                     {error && <span>發生錯誤，請重試</span>}
