@@ -8,8 +8,8 @@ import Link from "next/link";
 import { LoadingPage } from "../component/Loading";
 
 export default function Page() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("test@gmail.com");
+    const [password, setPassword] = useState("^#Xs4nd5Mrrt,f=");
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter()
