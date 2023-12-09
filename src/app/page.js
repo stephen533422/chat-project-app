@@ -14,7 +14,7 @@ export default function Home() {
 
   useLayoutEffect(()=>{
     if (user == null) {
-      router.push("/signin");
+      router.push("/introduce");
     }
     // else {
     //   router.push("/chats");

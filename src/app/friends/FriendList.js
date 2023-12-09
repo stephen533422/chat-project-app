@@ -1,31 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
-import styles from "@/app/chats/chatPage.module.scss"
+import styles from '@/app/friends/friendPage.module.scss';
 import { AuthContext } from "@/context/AuthContext";
-import { doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, deleteField, doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { FriendContext } from "@/context/FriendContext";
 import {v4 as uuid} from "uuid";
 import { useRouter } from "next/navigation";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { UsersContext } from "@/context/UsersContext";
 
 export default function  Friendlist()  {
     const [friendlist, setFriendlist] = useState([]);
 
     const {user} = useContext(AuthContext);
     const {dispatch} = useContext(FriendContext);
+    const {users} = useContext(UsersContext);
     
     const router = useRouter();
 
     useEffect(() => {
         const getFriendlist = ()=>{
-        const unsub = onSnapshot(doc(db, "userFriends", user.uid), (doc) => {
-            setFriendlist(doc.data());
-        });
-        return ()=>{
-            unsub();
+            const unsub = onSnapshot(doc(db, "userFriends", user.uid), (doc) => {
+                setFriendlist(doc.data());
+            });
+            return ()=>{
+                unsub();
+            };
         };
-    };
-    if(user)
-        user.uid && getFriendlist();
+        if(user)
+            user.uid && getFriendlist();
     },[user]);
 
     const handleSelect = (u)=>{
@@ -34,8 +37,8 @@ export default function  Friendlist()  {
     }
     const handleStartChat = async(friend) =>{
             // check whether the group (chats in firestore) exists, if not: create
-            const  chatroomId = friend.chatroomId? friend.chatroomId : uuid();
-            console.log("friend:", friend);
+            const chatroomId = friend.chatroomId? friend.chatroomId : uuid();
+            // console.log("friend:", friend);
             try{
                 const res = await getDoc(doc(db, "chats", chatroomId));
                 console.log("res:",res);
@@ -62,32 +65,22 @@ export default function  Friendlist()  {
                     await updateDoc(doc(db, "userChats", user.uid),{
                     [chatroomId+".chatroomInfo"]:{
                         uid: chatroomId,
-                        displayName: friend.userInfo.displayName,
-                        photoURL: friend.userInfo.photoURL,
                         type: "private",
                     },
                     [chatroomId+".date"]: serverTimestamp(),
                     [chatroomId+`.member.${friend.userInfo.uid}.userInfo`]:{
                         uid: friend.userInfo.uid,
-                        email: friend.userInfo.email,
-                        displayName: friend.userInfo.displayName,
-                        photoURL: friend.userInfo.photoURL,
                     }, 
                     });
     
                    await updateDoc(doc(db, "userChats", friend.userInfo.uid),{
                     [chatroomId+".chatroomInfo"]:{
                         uid: chatroomId,
-                        displayName: user.displayName,
-                        photoURL: user.photoURL,
                         type: "private",
                     },
                     [chatroomId+".date"]: serverTimestamp(),
                     [chatroomId+`.member.${user.uid}.userInfo`]:{
                         uid: user.uid,
-                        email: user.email,
-                        displayName: user.displayName,
-                        photoURL: user.photoURL,
                     },
                    });
 
@@ -107,6 +100,30 @@ export default function  Friendlist()  {
             }
             router.push("/chats");
     }
+    const handleDelFriend = async(friend)=>{
+        try{
+            const chatId = friend[1].chatroomId;
+            console.log(chatId);
+            await updateDoc(doc(db, "userFriends", user.uid),{
+                [friend[0]]: deleteField(),
+            });
+            await updateDoc(doc(db, "userFriends", friend[0]),{
+                [user.uid]: deleteField(),
+            });
+            if(chatId){
+                await updateDoc(doc(db, "userChats", user.uid),{
+                    [chatId]: deleteField(),
+                });
+                await updateDoc(doc(db, "userChats", friend.uid),{
+                    [chatId]: deleteField(),
+                });
+                await deleteDoc(doc(db,"chats", data.chatId));
+            }
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     if(friendlist && Object.keys(friendlist).length===0){
         return(
             <div className={styles.chatlist}>
@@ -118,15 +135,24 @@ export default function  Friendlist()  {
     console.log("friendlist:",friendlist);
     return (
         <div className={styles.chatlist}>
-            {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(chat=>{
-                console.log("friend: ",chat);
+            {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
+                // console.log("friend: ",friend);
                 return (
-                    <div className={styles.chat} key={chat[0]} >
-                        <img className={styles.image} src={chat[1].userInfo.photoURL?chat[1].userInfo.photoURL:"/user.png"} />
+                    <div className={styles.chat} key={friend[0]} onClick={()=>handleSelect(friend[1])}>
+                        <LazyLoadImage 
+                            src={users && users[friend[0]].photoURL}
+                            placeholderSrc="/user.png"
+                            effect='opacity' 
+                            alt="Image"
+                        />
                         <div className={styles.chatInfo}>
-                            <span>{chat[1].userInfo.displayName}</span>
+                            <div className={styles.name}>{users[friend[0]].displayName}</div>
+                            <div className={styles.info}><span>{users[friend[0]].email}</span></div>
                         </div>
-                        <button onClick={()=>handleStartChat(chat[1])}>開始聊天</button>
+                        <div className={styles.btnList}>
+                            <div className={styles.btn} onClick={(e)=>{e.stopPropagation();handleStartChat(friend[1]);}}>開始聊天</div>
+                            <div className={styles.btn} onClick={(e)=>{e.stopPropagation();handleDelFriend(friend);}}>刪除好友</div>
+                        </div>
                     </div>
                 );
             })}

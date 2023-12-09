@@ -1,18 +1,31 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from "@/app/chats/chatPage.module.scss"
 import classnames from 'classnames';
 import { AuthContext } from '@/context/AuthContext';
 import { ChatContext } from '@/context/ChatContext';
 import Link from 'next/link';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { UsersContext } from '@/context/UsersContext';
 
 const Message = ({message}) => {
     const {user} = useContext(AuthContext);
     const {data} = useContext(ChatContext);
+    const {users} = useContext(UsersContext);
+    const [ count, setCount ] = useState(0);
+    // console.log("count: ", count);
 
     const ref = useRef();
 
     useEffect(() => {
         // console.log(ref.current);
+        let newCount = 0;
+        Object.entries(data.member).map((arr)=>{
+            if(arr[1].readDate > message.date){
+                newCount=newCount+1;
+                setCount(newCount);
+            }
+        })
+        // console.log("count: ",count);
         ref.current?.scrollIntoView({ behavior: 'auto' });
     },[message]);
     // console.log(data);
@@ -24,17 +37,31 @@ const Message = ({message}) => {
                                 ? classnames(styles.message,  styles.owner)
                                 : styles.message}>
                 <div className={styles.messageInfo}>
-                    <img 
+                    <LazyLoadImage 
                         src={message.senderId === user.uid 
                                 ? user.photoURL
-                                : data.member[message.senderId]?.userInfo.photoURL } 
-                        alt="" 
-                    />
-                    {data.chatroomInfo.type==="group" && <span>{message.senderId !== user.uid && data.member[message.senderId]?.userInfo.displayName}</span>}
+                                : users[message.senderId].photoURL}
+                        placeholderSrc='/user.png'
+                        height={40}
+                        width={40}
+                        effect='opacity' 
+                        alt="Image"/>
+                    {data.chatroomInfo.type==="group" && 
+                        <span>
+                            {message.senderId !== user.uid && users[message.senderId].displayName}
+                        </span>}
                 </div>
                 <div className={styles.messageContent}>
                     {message.text && <p>{message.text}</p>}
-                    {message.img && <><img src={message.img} alt="" onClick={()=>window.open(message.img)} /></>}
+                    {message.img && <LazyLoadImage 
+                                        src={message.img} 
+                                        effect='opacity' 
+                                        alt="Image" 
+                                        height={150}
+                                        wrapperProps={{
+                                            style: {display: "flex"},
+                                        }}
+                                        onClick={()=>window.open(message.img)} />}
                     {message.file && 
                     <>
                         <p>
@@ -44,7 +71,20 @@ const Message = ({message}) => {
                     </>}
                 </div>
                 <div className={styles.messageTime}>
-                    <span>{message.date.toDate().toLocaleString()}</span>
+                    {data.chatroomInfo.type==="private" && message.senderId === user.uid &&
+                        <span>
+                            {Object.entries(data.member)[0][1].readDate > message.date 
+                                ? "已讀"
+                                : "未讀"
+                            }
+                        </span>
+                    }
+                    {data.chatroomInfo.type==="group" && message.senderId === user.uid &&
+                        <span>
+                            {"已讀 "+count}
+                        </span>
+                    }
+                    <span className={styles.time}>{message.date.toDate().toLocaleString()}</span>
                 </div>
             </div>
             }

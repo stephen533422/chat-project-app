@@ -11,12 +11,13 @@ import Chatroom from "./components/Chatroom";
 function Page() {
     const { user } = useAuthContext();
     const router = useRouter();
+
     useEffect(()=>{
         if (user == null) {
-            console.log("user is null ->/siginin");
+            // console.log("user is null ->/siginin");
             router.push("/signin");
         }
-      },);
+    },);
 
     return (
         <>  

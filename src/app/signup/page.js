@@ -8,6 +8,7 @@ import { auth, storage } from "@/firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import storeData from "@/firebase/firestore/storeData";
+import { LoadingPage } from "../component/Loading";
 
 export default function Page(){
     const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ export default function Page(){
             
                     await storeData("userChats", result.user.uid, {});
                     await storeData("userFriends", result.user.uid, {});
+                    await storeData("userFriendsRequest", result.user.uid, {});
                     router.push("/");
                 });
             });
@@ -54,6 +56,7 @@ export default function Page(){
 
     return (
         <div className={styles.main}>
+            { loading && <LoadingPage/>}
             <div className={styles.card}>
                 <form onSubmit={handleForm} className={classNames(styles.form,styles.grayborder)}>
                     <div className={classNames(styles.indexicon)}>
@@ -83,7 +86,6 @@ export default function Page(){
                                 <input className={styles.input} required type="file" id="file" />
                         </label>
                     </div>
-                    {loading && <span>上傳資料中，請稍後</span>}
                     {error && <span>發生錯誤，請重試</span>}
                     <div className={classNames(styles.container,styles.mb20)}>
                         <button className={classNames(styles.btn)} type="submit">註冊</button>

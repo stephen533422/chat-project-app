@@ -1,13 +1,11 @@
 "use client"
 import { createContext, useContext, useReducer } from "react";
-import { AuthContext } from "./AuthContext";
 
 export const ChatContext = createContext();
 
 
 
 export const ChatContextProvider = ({children}) => {
-    const {user} = useContext(AuthContext);
     /*
     {
         user:{},
@@ -27,7 +25,13 @@ export const ChatContextProvider = ({children}) => {
                     chatId: action.payload.chatroomInfo.uid,
                     member: action.payload.member,
                     chatroomInfo: action.payload.chatroomInfo
-                }
+                };
+            case "RESET":
+                return{
+                    chatId: "null",
+                    member: [],
+                    chatroomInfo: {},
+                };
             default:
                 return state;
         }

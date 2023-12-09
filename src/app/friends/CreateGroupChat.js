@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import styles from "@/app/chats/chatPage.module.scss"
+import styles from '@/app/friends/friendPage.module.scss';
 import { AuthContext } from "@/context/AuthContext";
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
+import { UsersContext } from "@/context/UsersContext";
+import { useRouter } from "next/navigation";
 
 export default function CreateGroupChat()  {
     const [chatname, setChatname] = useState("");
@@ -12,7 +14,9 @@ export default function CreateGroupChat()  {
     const [err, setErr] = useState(false);
 
     const {user} = useContext(AuthContext);
+    const {users} = useContext(UsersContext);
     const ref = useRef();
+    const router = useRouter();
 
     useEffect(() => {
         const getFriendlist = ()=>{
@@ -100,43 +104,41 @@ export default function CreateGroupChat()  {
         }
         
         setChatname("");
+        router.push("/chats");
     };
   
     return (
     <>
-{/* `        <div className={styles.searchform}>` */}
             <form onSubmit={(e)=>handleSubmit(e)}>
                 <div className={classNames(styles.searchform, styles.mb10)}>
                     <input 
                         type="text" 
                         placeholder='群組名稱'
                         onKeyDown={handleKey} 
-                        onFocus={()=>ref.current.style={display: 'flex'}}
-                        onBlur={()=>ref.current.style={display: 'none'}}
                         onChange={e=>setChatname(e.target.value)}
                         value={chatname}
                     />
                     <button className={styles.btn} type="submit">
-                        創建群組
+                        確認
                     </button>
                 </div>
-                <div ref={ref} className={styles.chatlist} style={{display: "none"}}>
-                    {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(chat=>{
+                <div ref={ref} className={styles.chatlist}>
+                    <div className={styles.title}>選擇想要加入的好友</div>
+                    {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
                         //console.log("friend: ",chat);
                         return (              
-                            <div className={styles.chat} key={chat[0]} >
-                                <input type="checkbox" data-uid={chat[1].userInfo.uid} data-email={chat[1].userInfo.email} data-name={chat[1].userInfo.displayName} data-photo={chat[1].userInfo.photoURL}></input>
-                                <img className={styles.image} src={chat[1].userInfo.photoURL?chat[1].userInfo.photoURL:"/user.png"} />
+                            <div className={styles.chat} key={friend[0]} >
+                                <img className={styles.image} src={users[friend[0]].photoURL? users[friend[0]].photoURL: "/user.png"} />
                                 <div className={styles.chatInfo}>
-                                    <span>{chat[1].userInfo.displayName}</span>
+                                    <div className={styles.name}>{users[friend[0]].displayName}</div>
+                                    <div className={styles.info}>{users[friend[0]].email}</div>
                                 </div>
-                                
+                                <input className={styles.checkbox} type="checkbox" data-uid={users[friend[0]].uid} data-email={users[friend[0]].email} data-name={users[friend[0]].displayName} data-photo={users[friend[0]].photoURL}></input>
                             </div>
                         );
                     })}
                 </div>
             </form>
-        {/* </div> */}
     </>
   );
 };

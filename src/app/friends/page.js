@@ -1,17 +1,15 @@
 'use client'
-import React, { useEffect } from "react";
-import { useAuthContext } from "@/context/AuthContext";
+import React, { useContext, useEffect } from "react";
+import { AuthContext} from "@/context/AuthContext";
 import classNames from "classnames";
-import styles from '@/app/chats/chatPage.module.scss';
+import styles from '@/app/friends/friendPage.module.scss';
 import Nav from '@/app/component/Nav'
 import FriendLists from "./FriendLists";
 import FriendProfile from "./FriendProfile";
 import { useRouter } from "next/navigation";
-import CreateGroupChat from "./CreateGroupChat";
-
 
 function Page() {
-    const { user } = useAuthContext();
+    const { user } = useContext(AuthContext);
     const router = useRouter();
     
     useEffect(()=>{
@@ -26,9 +24,7 @@ function Page() {
                 <Nav />
                 <div className={styles.section}>
                     <FriendLists />
-                    <div className={styles.chatlists}>
-                        <CreateGroupChat/>
-                    </div>
+                    <FriendProfile/>
                 </div>
             </div>
         </>

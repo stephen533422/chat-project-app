@@ -7,7 +7,6 @@ export const FriendContext = createContext();
 
 
 export const FriendContextProvider = ({children}) => {
-    const {user} = useContext(AuthContext);
     /*
     {
         user:{},
@@ -15,16 +14,18 @@ export const FriendContextProvider = ({children}) => {
     }
     */
     const INITIAL_STATE = {
-        chatroomId: "",
-        friendInfo: {},
+        chatroomId: "null",
+        date: null,
+        uid: "null",
     }
 
     const chatReducer = (state, action)=>{
         switch(action.type) {
             case "CHANGE_USER":
                 return{
-                    chatroomId: action.payload.chatroom?.chatroomId,
-                    friendInfo: action.payload.userInfo
+                    chatroomId: action.payload.chatroomId,
+                    date: action.payload.date,
+                    uid: action.payload.userInfo.uid,
                 }
             default:
                 return state;
