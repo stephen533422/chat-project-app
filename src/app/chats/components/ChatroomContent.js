@@ -10,7 +10,7 @@ import { v4 as uuid } from "uuid";
 export default function  ChatroomContent()  {
     const [messages, setMessages] = useState([]);
     const { data } = useContext(ChatContext);
-    console.log(data);
+    // console.log(data);
     useEffect(() =>{
         const unSub = onSnapshot(doc(db, "chats", data.chatId), (doc) =>{
             doc.exists() && setMessages(doc.data().messages);

@@ -10,6 +10,7 @@ import classnames from "classnames";
 
 export default function  Chatlist()  {
     const [chatlists, setChatlists] = useState([]);
+    const [loading, setLoading] = React.useState(true);
 
     const {user} = useContext(AuthContext);
     const {dispatch} = useContext(ChatContext);
@@ -17,15 +18,15 @@ export default function  Chatlist()  {
 
     useEffect(() => {
         const getChatlists = ()=>{
-        const unsub = onSnapshot(doc(db, "userChats", user.uid), (doc) => {
-            // console.log(doc.data());
-            setChatlists(Object.entries(doc.data())?.sort((a,b)=>b[1].date - a[1].date));
-        });
-
-        return ()=>{
-            unsub();
+            const unsub = onSnapshot(doc(db, "userChats", user.uid), (doc) => {
+                // console.log(doc.data());
+                setChatlists(Object.entries(doc.data())?.sort((a,b)=>b[1].date - a[1].date));
+            });
+            setLoading(false);
+            return ()=>{
+                unsub();
+            };
         };
-    };
     if(user)
         user.uid && getChatlists();
     },[user]);
@@ -61,11 +62,12 @@ export default function  Chatlist()  {
         <div className={styles.chatlist}>
             {chatlists && chatlists?.map(chat=>{
                 // console.log("Chats.js chat: ",chat);
+                // console.log(users[Object.entries(chat[1].member)[0][0]].displayName);
                 return (
                     <div className={styles.chat} key={chat[0]} onClick={()=>handleSelect(chat[1])}>
                         {chat[1].chatroomInfo.type === "group" && 
                             <LazyLoadImage 
-                                src={chat[1].chatroomInfo.photoURL}
+                                src="/groupPhoto.png"
                                 placeholderSrc="/groupPhoto.png"
                                 effect='opacity' 
                                 alt="Image"
@@ -81,7 +83,8 @@ export default function  Chatlist()  {
                         }
                         <div className={styles.chatInfo}>
                             <div className={classnames(chat[1].unreadCount!==0 && styles.unread,styles.name)}>
-                                {chat[1].chatroomInfo.displayName}
+                                {chat[1].chatroomInfo.type==="group" && chat[1].chatroomInfo.displayName }
+                                {chat[1].chatroomInfo.type==="private" && users[Object.entries(chat[1].member)[0][0]].displayName }
                             </div>
                             <div className={styles.info}>
                                 <span className={classnames(chat[1].unreadCount!==0 && styles.unread, styles.text)}>{chat[1].lastMessage?.text}</span>

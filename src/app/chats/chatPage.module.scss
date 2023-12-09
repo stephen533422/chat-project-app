@@ -116,7 +116,7 @@
               height: auto;
               display: flex;
               flex-direction: column;
-              overflow-y: scroll;
+              overflow-y: auto;
 
               .chat {
                 padding: 8px 24px;
@@ -156,6 +156,7 @@
                   flex-wrap: nowrap;
                   flex-direction: column;
                   position: relative;
+                  flex: 1 0 230px;
                   @include pad{
                     display: none;
                   } 
@@ -239,6 +240,9 @@
                   padding: 12px;
                   font-size: 24px;
                   font-weight: 500;
+                  @include mobile{
+                    font-size: 16px;
+                  }
                 }
                 img {
                   width: 44px;
@@ -272,13 +276,16 @@
                     top: 48px;
                     border-radius: 10px;
                     border: #fafafa 1px solid;
-                    padding: 20px;
+                    padding: 10px;
                     z-index: 1;
+                    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
                     .menuItem{
                       padding: 12px 8px;
+                      border-radius: 5px;
                       cursor: pointer;
                       &:hover{
-                        background-color: #fafafa;
+                        background-color: #f0f2f5;
                         transition: 0.3s;
                       }
                     }
@@ -291,9 +298,11 @@
                 padding: 20px;
                 // height: calc(100% - 165px);
                 flex: 0 1 calc(100% - 165px);
-                overflow-y: scroll;
+                overflow-y: auto;
                 overflow-x: hidden;
-                box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px,rgba(0, 0, 0, 0.1) 0px -1px 10px 0px inset;
+                // box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px,rgba(0, 0, 0, 0.1) 0px -1px 10px 0px inset;
+                border-top: 1px solid rgba(219, 219, 219, 0.45);
+                border-bottom: 1px solid rgba(219, 219, 219, 0.45);
 
                 @include mobile{
                   padding: 10px;
@@ -550,19 +559,34 @@
   .searchform {
       display: flex;
       flex-direction: row;
+      border-radius: 5px;
+      border: 1px solid #f0f2f5;
+      overflow: hidden;
+      padding: 5px;
+
       input {
           padding: 10px;
           outline: none;
+          flex: 1 0 auto;
+          outline: none;
+          border: none;
       }
-      button {
-          width: 40px;
-          height: 40px;
+      .btn {
+        padding: 0px 10px;
+        background-color: #45a2df;
+        color: white;
+        border-radius: 5px;
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-          img{
-              width: 20px;
-              height: 20px;
-              object-fit:cover;
-          }
+        img{
+            width: 20px;
+            height: 20px;
+            object-fit:cover;
+        }
       }
   }
   .searchlist{
@@ -616,14 +640,13 @@
     height: 400px;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .chat {
-      padding: 8px 24px;
+      padding: 10px;
       display: flex;
       align-items: center;
-      gap: 20px;
-      cursor: pointer;
+      gap: 10px;
       position: relative;
       &:hover {
           background-color: #fafafa;
@@ -643,12 +666,12 @@
       .chatInfo {
 
         .name {
-          font-size: 20px;
-          font-weight: 500;
+          font-size: 16px;
+          font-weight: 700;
         }
         .info {
           color: rgb(80, 80, 80);
-          font-size: 14px;
+          font-size: 13px;
           display: flex;
           flex-wrap: nowrap;
           span{
@@ -693,8 +716,29 @@
           height: 15px;
       }
   }
+  .btnList{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    .btn{
+      padding: 5px 5px;
+      background-color: #45a2df;
+      color: white;
+      border-radius: 5px;
+      font-size: 13px;
+      outline: none;
+      border: none;
+    }
+  }
+  .title{
+    font-size: 16px;
+    font-weight: 700;
+    color: grey;
+    padding: 5px;
+  }
 }
-.sModal{
+.s_modal{
   width: 250px;
   height: 100%;
   display: flex;

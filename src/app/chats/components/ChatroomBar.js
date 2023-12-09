@@ -241,7 +241,7 @@ export default function  ChatroomBar()  {
           <div className={styles.chatroomHeadline}>
             {data.chatroomInfo.type === "group" && 
                 <LazyLoadImage 
-                    src={data.chatroomInfo.photoURL}
+                    src="/groupPhoto.png"
                     placeholderSrc="/groupPhoto.png"
                     height={44}
                     width={44}
@@ -259,7 +259,10 @@ export default function  ChatroomBar()  {
                     alt="Image"
                 />
             }
-            <div className={styles.chatroomName}>{data.chatroomInfo?.displayName}</div>
+            <div className={styles.chatroomName}>
+              {data.chatroomInfo.type==="group" && data.chatroomInfo.displayName }
+              {data.chatroomInfo.type==="private" && users[Object.entries(data.member)[0][0]].displayName }
+            </div>
           </div>
           <div className={styles.chatroomIcons}>
               {data.chatroomInfo.type==="group" && <img src="/users-medical.png" alt="" onClick={handleAdd}/>}
@@ -295,8 +298,8 @@ export default function  ChatroomBar()  {
                                   <LazyLoadImage 
                                       src={users && users[uid].photoURL}
                                       placeholderSrc="/user.png"
-                                      height={50}
-                                      width={50}
+                                      height={56}
+                                      width={56}
                                       effect='opacity' 
                                       alt="Image"
                                   />
@@ -323,23 +326,25 @@ export default function  ChatroomBar()  {
                       <img src="/cross.png"></img>
                   </button>
                   <form onSubmit={(e)=>handleSubmit(e)}>
-                  <div className={styles.chatlist}>
-                    {friendlist && Object.entries(friendlist)?.filter(f=>!memberList.includes(f[0])).map(friend=>{
-                          return (              
-                              <div className={styles.chat} key={friend[0]} >
-                                  <img className={styles.image} src={users[friend[0]].photoURL? users[friend[0]].photoURL: "/user.png"} />
-                                  <div className={styles.chatInfo}>
-                                      <span className={styles.name}>{users[friend[0]].displayName}</span>
-                                      <div className={styles.info}><span>{users[friend[0]].email}</span></div>
-                                  </div>
-                                  <input type="checkbox" data-uid={users[friend[0]].uid} data-email={users[friend[0]].email} data-name={users[friend[0]].displayName} data-photo={users[friend[0]].photoURL}></input>
-                              </div>
-                          );
-                      })}
-                      { Object.entries(friendlist)?.filter(f=>!memberList.includes(f[0])).length===0                 
-                          && <div className={styles.null}>沒有可添加的好友</div>}
-                  </div>
-                  <button type="submit">加入群組</button>
+                    <div className={styles.chatlist}>
+                      {friendlist && Object.entries(friendlist)?.filter(f=>!memberList.includes(f[0])).map(friend=>{
+                            return (              
+                                <div className={styles.chat} key={friend[0]} >
+                                    <img className={styles.image} src={users[friend[0]].photoURL? users[friend[0]].photoURL: "/user.png"} />
+                                    <div className={styles.chatInfo}>
+                                        <span className={styles.name}>{users[friend[0]].displayName}</span>
+                                        <div className={styles.info}><span>{users[friend[0]].email}</span></div>
+                                    </div>
+                                    <input type="checkbox" data-uid={users[friend[0]].uid} data-email={users[friend[0]].email} data-name={users[friend[0]].displayName} data-photo={users[friend[0]].photoURL}></input>
+                                </div>
+                            );
+                        })}
+                        { Object.entries(friendlist)?.filter(f=>!memberList.includes(f[0])).length===0                 
+                            && <div className={styles.null}>沒有可添加的好友</div>}
+                    </div>
+                    <div className={styles.btnList}>
+                      <button class={styles.btn} type="submit">加入群組</button>
+                    </div>
                   </form>
                 </div>
               </Modal>
@@ -350,21 +355,21 @@ export default function  ChatroomBar()  {
                   contentLabel="Modal"
                   ariaHideApp={false}
                 >
-                  <div className={styles.sModal}>
+                  <div className={styles.modal}>
                     <div className={styles.title}>更改群組名稱</div>
                     <button className={styles.closebtn} onClick={handleChange}>
                         <img src="/cross.png"></img>
                     </button>
-                    <div className={styles.chatlist}>
+                    <div className={styles.searchform}>
                       <input 
                         type="text" 
                         placeholder='更改群組名稱'
                         onChange={(e)=>setChangeName(e.target.value)}
                         value={changeName}
                       />
-                      <button className={styles.btn} onClick={handleChangeName}>
+                      <div className={styles.btn} onClick={handleChangeName}>
                         確認
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </Modal>

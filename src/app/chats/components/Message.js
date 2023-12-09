@@ -12,7 +12,7 @@ const Message = ({message}) => {
     const {data} = useContext(ChatContext);
     const {users} = useContext(UsersContext);
     const [ count, setCount ] = useState(0);
-    console.log("count: ", count);
+    // console.log("count: ", count);
 
     const ref = useRef();
 
@@ -25,7 +25,7 @@ const Message = ({message}) => {
                 setCount(newCount);
             }
         })
-        console.log("count: ",count);
+        // console.log("count: ",count);
         ref.current?.scrollIntoView({ behavior: 'auto' });
     },[message]);
     // console.log(data);
