@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import {  db } from '@/firebase/config';
+import React from 'react';
+import { db } from '@/firebase/config';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { LoadingPage } from '@/app/component/Loading';
 
@@ -14,23 +14,19 @@ export const UsersContextProvider = ({
     const [users, setUsers] = React.useState(null);
     const [loading, setLoading] = React.useState(true);
 
-    useEffect(() =>{
-        const unSub = async ()=>{
-            onSnapshot(collection(db, "users"), (querySnapshot)=>{
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    setUsers(perv=>({
-                        ...perv,
-                        [doc.id]:doc.data(),
-                    }));
-                });
-            })
-            setLoading(false);
-        }
-
-        return ()=>{
-            unSub();
-        }
+    React.useEffect(() =>{
+        const unSub = onSnapshot(collection(db, "users"), (querySnapshot)=>{
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, doc.data());
+                // doc.data() is never undefined for query doc snapshots
+                setUsers(perv=>({
+                    ...perv,
+                    [doc.id]:doc.data(),
+                }));
+            });
+        });
+        setLoading(false);
+        return ()=>unSub();
     },[]);
     // console.log('user: ', user);
     return (
