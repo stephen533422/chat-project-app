@@ -26,7 +26,7 @@ export default function Page() {
                 </div>
             </div>
             <div className={styles.section}>
-                <dic className={styles.headline}>
+                <div className={styles.headline}>
                     <div className={styles.indexicon}>
                         <img src={"/chat.png"}></img>
                         <h1>InstantChat</h1>
@@ -34,7 +34,7 @@ export default function Page() {
                     <div className={styles.text}>
                         <h2>提供一對一以及多人群組的線上聊天室與社群貼文功能</h2>
                     </div>
-                </dic>
+                </div>
                 <div className={styles.btn} onClick={()=>router.push("/signin")}>開始探索</div>
             </div>
             <div className={styles.cardList}>
