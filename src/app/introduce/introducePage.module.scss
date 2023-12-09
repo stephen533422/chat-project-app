@@ -17,13 +17,17 @@
     align-items: center;
     flex-direction: column;
     .nav{
-        padding: 10px;
+        padding: 10px 20px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         height: 50px;
+        border-bottom: 1px solid #f0f2f5;
+        @include mobile{
+            padding: 10px;
+        }
 
         .indexicon {
             display: flex;
@@ -43,11 +47,20 @@
         .btnList{
             display: flex;
             flex-direction: row;
+            gap: 10px;
             .btn{
+                width: 60px;
+                height: 30px;
                 padding: 10px;
                 border-radius: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                background-color: #45a2df;
+                color: white;
                 &:hover{
-                    background-color: #f0f2f5;
+                    opacity: 0.8;
                 }
             }
         }
@@ -60,12 +73,15 @@
         gap: 20px;
         align-items: center;
         padding: 20px 0px;
+        height: calc( 100vh - 50px);
+        justify-content: space-evenly;
 
         .headline{
             display: flex;
             flex-direction: column;
             gap:20px;
             padding: 20px;
+            align-items: center;
 
             .indexicon {
                 display: flex;
@@ -75,11 +91,11 @@
                 gap: 5px;
                 padding: 0px;
                 font-family: cursive;
-                cursor: pointer;
+
                 img{
                     display: block;
-                    width: 24px;
-                    height: 24px;
+                    width: 80px;
+                    height: 80px;
                 }
             }
             .text{
@@ -88,10 +104,25 @@
                 justify-content: center;
                 align-items: center;
                 white-space: normal;
+
+                span{
+                    font-size: 48px;
+                    font-weight: 800;
+                    @include pad{
+                        font-size: 30px;
+                    }
+                    @include mobile{
+                        font-size: 24px;
+                    }
+                }
             }
         }
-
         .btn{
+            height: 40px;
+            width: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 10px;
             background-color: #45a2df;
             border-radius: 5px;
@@ -110,34 +141,112 @@
         gap: 20px;
         align-items: center;
         padding: 20px 0px;
-
-        .card{
-            width: 80%;
-            background-color: #ffffff;
-            max-width: 760px;
-            flex: 0 0 auto;
-            flex-direction: column;
-            padding: 12px 16px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+        @include mobile{
+            gap: 80px;
+            padding: 60px 0px;
+        }
+    }
+    .footer{
+        padding: 10px 40px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid #f0f2f5;
+        @include mobile{
+            padding: 10px 20px;
+        }
+        .text{
             font-weight: 700;
             color: grey;
-            gap: 10px;
-            @include mobile(){
-                width: 100%;
-                max-width: 100%;
-                padding: 12px 0px;
-                border-radius: 0;
-            }
-
-            img{
-                width: 100%;
-                object-fit: contain;
-                border: 1px solid #f0f2f5;
-                border-radius: 5px;
+            @include mobile{
+                font-size: 14px;
             }
         }
+        .btnList{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            .btn{
+                width: 60px;
+                height: 30px;
+                border-radius: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                &:hover{
+                    opacity: 0.8;
+                }
+
+                img{
+                    width:30px;
+                    height: 30px;
+                    object-fit: contain;
+                }
+            }
+        }
+    }
+}
+.window{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include mobile{
+        height: 100%;
+    }
+
+    .card{
+        width: 80%;
+        background-color: #ffffff;
+        max-width: 760px;
+        flex: 0 0 auto;
+        flex-direction: column;
+        padding: 12px 16px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        font-weight: 700;
+        color: grey;
+        gap: 10px;
+        @include mobile(){
+            width: 100%;
+            max-width: 100%;
+            padding: 12px 0px;
+            border-radius: 0;
+        }
+
+        img{
+            width: 100%;
+            object-fit: contain;
+            border: 1px solid #f0f2f5;
+            border-radius: 5px;
+        }
+        span{
+            font-size: 48px;
+            font-weight: 800;
+            @include pad{
+                font-size: 30px;
+            }
+            @include mobile{
+                font-size: 24px;
+            }
+        }
+    }
+}
+.scrolldownBtn{
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+
+    img{
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
     }
 }
