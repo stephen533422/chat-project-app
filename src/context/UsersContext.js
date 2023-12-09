@@ -15,19 +15,15 @@ export const UsersContextProvider = ({
     const [loading, setLoading] = React.useState(true);
 
     useEffect(() =>{
-        const unSub = async ()=>{
-            onSnapshot(collection(db, "users"), (querySnapshot)=>{
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    setUsers(perv=>({
-                        ...perv,
-                        [doc.id]:doc.data(),
-                    }));
-                });
-            })
-            setLoading(false);
-        }
-
+        const unSub =  onSnapshot(collection(db, "users"), (querySnapshot)=>{
+            querySnapshot.forEach((doc) => {
+                setUsers(perv=>({
+                    ...perv,
+                    [doc.id]:doc.data(),
+                }));
+            });
+        })
+        setLoading(false);
         return ()=>{
             unSub();
         }
