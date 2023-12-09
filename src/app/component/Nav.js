@@ -20,10 +20,13 @@ function Nav() {
                     <img src={"/chat.png"}></img>
                     <h2>InstantChat</h2>
                 </div>
-                {user && <div className={styles.navUser} onClick={()=>router.push("profile")}>
-                    <img src={user.photoURL?user.photoURL:"/user.png"}></img>
-                    <span>{user.displayName}</span>
-                </div>}
+                {user && 
+                    // <div className={styles.navUser} onClick={()=>router.push("profile")}>
+                    <div className={styles.navUser} >
+                        <img src={user.photoURL?user.photoURL:"/user.png"}></img>
+                        <span>{user.displayName}</span>
+                    </div>
+                }
                 <Link href="/friends">
                     <div className={styles.navItem}>
                         {path==="/friends" 
@@ -51,9 +54,11 @@ function Nav() {
                         <div className={styles.title}>貼文</div>
                     </div>
                 </Link>
-                <Link href="/settings">
+                {/* <Link href="/settings"> */}
+                <Link href="/profile">
                     <div className={styles.navItem}>
-                        {path==="/settings" 
+                        {/* {path==="/settings"  */}
+                        {path==="/profile"
                                 ?<img src="/nav/settings-dark.png"></img>
                                 :<img src="/nav/settings.png"></img>
                         }

@@ -66,7 +66,7 @@
         border-radius: 10px;
         gap: 30px;
         &:hover{
-            cursor: pointer;
+            // cursor: pointer;
             background-color: #f2f2f2;
         }
         img {
@@ -87,7 +87,8 @@
             }
         }
         @include mobile{
-            padding: 0px;
+            padding: 3px;
+            border-radius: 3px;
             align-items: baseline;
         }
     }
@@ -118,7 +119,8 @@
             }
         }   
         @include mobile{
-            padding: 0px;
+            padding: 3px;
+            border-radius: 3px;
         }
     }
     .navContainer{
@@ -142,7 +144,7 @@
             cursor: pointer;
             margin: 5px;
             &:hover{
-                background-color: #62acde;
+                opacity: 0.8;
             }
         }
         @include pad{
