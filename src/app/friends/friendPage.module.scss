@@ -1,0 +1,622 @@
+@mixin pad{
+    @media(max-width:900px){
+      @content;
+    }
+  }
+  @mixin mobile{
+    @media(max-width:767px){
+      @content;
+    }
+  }
+  @mixin s_mobile{
+    @media(max-width:480px){
+      @content;
+    }
+  }
+  
+  .main{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      @include mobile{
+        flex-direction: column;
+      }
+      
+      .section{
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          flex-direction: row;
+          @include mobile{
+            height: calc(100vh - 45px);
+          }
+          
+          .chatlists{
+              width: 400px;
+              height: 100%;
+              border-right: 1px solid rgba(219, 219, 219, 0.495);
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              flex: 0 0 auto;
+  
+              @include pad{
+                width: 104px;
+              }
+              @include mobile{
+                width: 50px;
+              }
+              .btnList{
+                display: flex;
+                padding: 10px 15px;
+                justify-content: space-between;
+                flex-direction: row;
+                @include pad{
+                    flex-direction: column;
+                    padding: 5px;
+                }
+
+                .btnItem{
+                  flex: 1 0 auto;
+                  padding: 10px;
+                  cursor: pointer;
+                  border-radius: 10px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-around;
+                  &:hover{
+                    background-color: #f2f2f2;
+                  }
+
+                  img{
+                    width:24px;
+                    height: 24px;
+                  }
+                  .text{
+                    @include pad{
+                      display: none;
+                    }
+                  }
+                  @include mobile{
+                    border-radius: 5px;
+                  }
+                }
+              }
+              .searchform {
+                  display: flex;
+                  flex-direction: row;
+                  input {
+                      padding: 10px;
+                      outline: none;
+                  }
+                  button {
+                      width: 40px;
+                      height: 40px;
+  
+                      img{
+                          width: 20px;
+                          height: 20px;
+                          object-fit:cover;
+                      }
+                  }
+              }
+              .searchlist{
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                .chat {
+                  border: 1px solid gray;
+                  border-radius: 10px;
+                  padding: 10px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  cursor: pointer;
+                  &:hover {
+                      background-color: rgba(128, 128, 128, 0.3);
+                    }
+                  img {
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 50%;
+                      object-fit: cover;
+                  }
+            
+                  .chatInfo {
+                      span {
+                        font-size: 18px;
+                        font-weight: 500;
+                      }
+                      p {
+                        font-size: 14px;
+                        color: rgb(80, 80, 80);
+                      }
+
+                  }
+                }
+                .null{
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  color: grey;
+                  font-size: 23px;
+                  font-weight: 600;
+                }
+              }
+              .chatlist{
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+  
+                .chat {
+                  padding: 8px 24px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  cursor: pointer;
+                  position: relative;
+                  &:hover {
+                      background-color: #fafafa;
+                  }
+                  span{
+                    height: 56px;
+                    width: 56px;
+                  }
+                  img {
+                      width: 56px;
+                      height: 56px;
+                      border-radius: 50%;
+                      object-fit: cover;
+                  }
+                  @include mobile{
+                    padding: 8px 8px;
+                    span{
+                      height: 34px;
+                      width: 34px;
+                    }
+                    img {
+                      width: 34px;
+                      height: 34px;
+                    }
+                  }
+  
+                  .chatInfo {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: nowrap;
+                    flex-direction: column;
+                    position: relative;
+                    flex: 1 0 auto;
+                    @include pad{
+                      display: none;
+                    } 
+  
+                    .name {
+                      font-size: 20px;
+                      font-weight: 500;
+                    }
+                    .info {
+                      color: rgb(80, 80, 80);
+                      font-size: 14px;
+                      display: flex;
+                      flex-wrap: nowrap;
+                      span{
+                        width: auto;
+                        height: auto;
+                        flex-shrink: 0;
+                      }
+                      .text{
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        flex-shrink: 1;
+                        white-space: nowrap;
+                      }
+                    }
+                    // .unread{
+                    //   color:#000000;
+                    //   font-weight: 600;
+                    // }
+                    // .unreadCount{
+                    //   padding: 0px 5px;
+                    //   background-color: #45a2df;
+                    //   color: white;
+                    //   position: absolute;
+                    //   right: 0;
+                    //   top: 0;
+                    //   border-radius: 10%;
+                    // }
+                  }
+                  .btnList{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 0;
+                    @include pad{
+                      display: none;
+                    }
+
+                    .btn{
+                      padding: 0px 8px;
+                      height: 30px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      background-color: #45a2df;
+                      color: white;
+                      border-radius: 5px;
+                      border: none;
+                      outline: none;
+                      cursor: pointer;
+                      font-size: 14px;
+                      &:hover{
+                        opacity: 0.8;
+                      }
+                    }
+                  }            
+                }
+                .null{
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  color: grey;
+                  font-size: 23px;
+                  font-weight: 600;
+                }
+              }
+          }
+  
+          .chatroom{
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              overflow-y: auto;
+  
+              .null{
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  color: grey;
+                  font-size: 23px;
+                  font-weight: 600;
+              }
+              .profilePage{
+                width: 100%;
+                background-color: white;
+                display: flex;
+                flex-direction: column;
+    
+                .profile{
+                  padding: 20px;
+                  background-color: white;
+                  .background{
+                    width: 100%;
+                    height: 405px;
+                    overflow: hidden;
+                    border-radius: 10px;
+                    position: relative;
+    
+                    img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    .edit{
+                        position: absolute;
+                        right: 45px;
+                        bottom: 30px;
+                    }
+                  }
+                  .userbox{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    padding-bottom: 10px;
+                    position: relative;
+                    @include mobile{
+                      flex-direction: column;
+                      align-items: first baseline;
+                    }
+      
+                    .avatar{
+                        width: 176px;
+                        height: 176px;
+                        flex: 0 0 auto;
+                        border-radius: 50%;
+                        background-color: rgb(255, 94, 94);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+    
+                        img {
+                            width: 168px;
+                            height: 168px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+                        .edit{
+                            position: absolute;
+                            top: calc(150px - 26px / 2);
+                            left: calc(150px - 26px / 2);
+                        }
+                    }
+                    .information{
+                        padding-left: 30px;
+                        .displayName{
+    
+                            span{
+                                font-family: "Noto Sans TC", sans-serif;
+                                font-size: 48px;
+                                font-weight: 500;
+                            }
+                        }
+                        // .about{
+    
+                        // }
+                    }
+                    .btnList{
+                      position: absolute;
+                      right: 0px;
+                      top: 10px;
+                      display: flex;
+                      flex-direction: row;
+                      gap: 10px;
+                      @include mobile{
+                        flex-direction: column;
+                      }
+
+                      .btn{
+                        padding: 10px 10px;
+                        background-color: #45a2df;
+                        color: white;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        &:hover{
+                            opacity: 0.8;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                
+            }
+          }
+      }
+  
+      .mb10{
+        margin-bottom: 10px;
+      }
+      .border{
+        padding:5px;
+        border: 1px solid rgb(126, 126, 126);
+      }
+  }
+
+  .modal{
+    width: 250px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 0 0 auto;
+    position: relative;
+
+    .searchform {
+        display: flex;
+        flex-direction: row;
+        border-radius: 5px;
+        border: 1px solid gray;
+        overflow: hidden;
+        padding: 5px;
+
+        input {
+            flex: 1 0 auto;
+            padding: 10px;
+            outline: none;
+            border: none;
+        }
+        .btn {
+            width: 60px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            background-color: #45a2df;
+            padding: 0px 5px;
+            color: white;
+            outline: none;
+            border: none;
+            &:hover{
+              opacity: 0.8;
+            }
+
+            img{
+                width: 20px;
+                height: 20px;
+                object-fit:cover;
+            }
+        }
+    }
+    .searchlist{
+      width: 100%;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .chat {
+        border: 1px solid gray;
+        border-radius: 5px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .chatInfo {
+          display: flex;
+          gap: 5px;
+          flex-wrap: nowrap;
+          flex-direction: column;
+          flex-grow: 1; 
+
+          .name {
+            font-size: 16px;
+            font-weight: 700;
+          }
+          .info {
+            color: rgb(80, 80, 80);
+            font-size: 13px;
+            display: flex;
+            flex-wrap: nowrap;
+            span{
+              width: auto;
+              height: auto;
+              flex-shrink: 0;
+            }
+          }
+        }
+        .btn{
+          padding: 5px 5px;
+          background-color: #45a2df;
+          color: white;
+          border-radius: 5px;
+          font-size: 13px;
+        }
+        .pointer{
+          cursor:pointer;
+        }
+      }
+      .null{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: grey;
+        font-size: 23px;
+        font-weight: 600;
+      }
+    }
+    .chatlist{
+      width: 100%;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      gap: 5px;
+
+      .chat {
+        border: 1px solid gray;
+        border-radius: 5px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        span{
+          height: 50px;
+          width: 50px;
+        }
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .chatInfo {
+          display: flex;
+          gap: 5px;
+          flex-wrap: nowrap;
+          flex-direction: column;
+          flex-grow: 1; 
+
+          .name {
+            font-size: 16px;
+            font-weight: 700;
+          }
+          .info {
+            color: rgb(80, 80, 80);
+            font-size: 13px;
+            display: flex;
+            flex-wrap: nowrap;
+            span{
+              width: auto;
+              height: auto;
+              flex-shrink: 0;
+            }
+            .text{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              flex-shrink: 1;
+              white-space: nowrap;
+            }
+          }
+        }
+        .checkbox{
+          position: absolute;
+          right: 24px;
+        }
+        .btn{
+          padding: 5px 5px;
+          background-color: #45a2df;
+          color: white;
+          border-radius: 5px;
+          font-size: 13px;
+        }            
+      }
+      .null{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: grey;
+        font-size: 23px;
+        font-weight: 600;
+      }
+    }
+    .closebtn{
+        position: absolute;
+        right: 0;
+        top: 0;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        &:hover{
+            transform: scale(110%);
+            transition: all 0.3s ;
+        }
+
+        img{
+            width: 15px;
+            height: 15px;
+        }
+    }
+    .title{
+      font-size: 16px;
+      font-weight: 700;
+      color: grey;
+      padding: 5px;
+    }
+}
