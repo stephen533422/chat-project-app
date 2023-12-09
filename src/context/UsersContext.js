@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {  db } from '@/firebase/config';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { LoadingPage } from '@/app/component/Loading';
 
 
 export const UsersContext = React.createContext({});
@@ -34,7 +35,7 @@ export const UsersContextProvider = ({
     // console.log('user: ', user);
     return (
         <UsersContext.Provider value={{ users }}>
-            {loading ? <div>Loading...</div> : children}
+            {loading ? <LoadingPage/> : children}
         </UsersContext.Provider>
     );
 };
