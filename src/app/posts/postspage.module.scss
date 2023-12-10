@@ -600,7 +600,7 @@
   flex-direction: column;
   gap: 20px;
   align-items: center;
-  padding-top: 20px;
+  padding: 20px 0px;
 
   .post{
     background-color: #ffffff;
@@ -883,6 +883,7 @@
 }
 .commentList{
   background-color: #ffffff;
+  padding: 5px 0px;
   .comment{
     display: flex;
     flex-direction: column;

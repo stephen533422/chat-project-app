@@ -11,10 +11,10 @@ import { useRouter } from "next/navigation";
 
 
 export default function FriendProfile()  {
-    const { user } =useContext(AuthContext); 
+  const { user } =useContext(AuthContext); 
   const { data } = useContext(FriendContext);
   const { users } = useContext(UsersContext);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const router = useRouter();
   console.log(data);
   console.log(posts);
@@ -161,7 +161,7 @@ try{
                 </div>
             </div>
         </div>
-        {posts.length!==0 && <PostList posts={posts}/>}
+        {posts && posts.length!==0 && <PostList posts={posts} key={data.uid}/>}
             {/* <div className={styles.null}>
                 個人主頁功能開發中
             </div> */}
