@@ -215,7 +215,7 @@ function Page() {
                                         {background===null && <label htmlFor="background">上傳</label>}
                                         {background!==null && <>
                                             <button onClick={()=>{handleCancel("background")}}>取消</button>
-                                            <button onClick={()=>handleUpload("background")}>確認</button>
+                                            <button onClick={()=>{handleUpload("background")}}>確認</button>
                                         </>}
                                     </div>
                                 </div>
@@ -233,7 +233,7 @@ function Page() {
                                             {avastar===null && <label htmlFor="avastar">上傳</label>}
                                             {avastar!==null && <>
                                                 <button onClick={()=>{handleCancel("avastar")}}>取消</button>
-                                                <button onClick={()=>handleUpload("avastar")}>確認</button>
+                                                <button onClick={()=>{handleUpload("avastar")}}>確認</button>
                                             </>}
                                         </div>
                                     </div>
