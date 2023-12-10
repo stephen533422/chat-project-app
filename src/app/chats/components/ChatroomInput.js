@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "@/app/chats/chatPage.module.scss"
 import { AuthContext } from "@/context/AuthContext";
 import { ChatContext } from "@/context/ChatContext";
-import { Timestamp, arrayUnion, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
+import { Timestamp, arrayUnion, doc, getDoc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/firebase/config";
 import { v4 as uuid } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -116,11 +116,12 @@ export default function  ChatroomInput()  {
                 if(obj[1].userInfo.uid !== user.uid){
                     let readDate=new Date();
                     let unreadCount = 0;                    
-                    onSnapshot(doc(db, "userChats", obj[1].userInfo.uid), (doc) => {
-                        readDate=doc.data()[data.chatId]["readDate"];
-                        unreadCount=doc.data()[data.chatId]["unreadCount"];
-                    });
-                    if (readDate > date){
+                    // const unsub=
+                    const docSnap=await getDoc(doc(db, "userChats", obj[1].userInfo.uid));
+                    readDate=docSnap.data()[data.chatId]["readDate"];
+                    unreadCount=docSnap.data()[data.chatId]["unreadCount"];
+                    // unsub();
+                    if (readDate < date){
                         await updateDoc(doc(db, "userChats", obj[1].userInfo.uid),{
                             [data.chatId+".lastMessage"]: {text:`${user.displayName}傳送了圖片`},
                             [data.chatId+".date"]: date,
@@ -168,20 +169,21 @@ export default function  ChatroomInput()  {
                 if(obj[1].userInfo.uid !== user.uid){
                     let readDate=new Date();
                     let unreadCount = 0;                    
-                    onSnapshot(doc(db, "userChats", obj[1].userInfo.uid), (doc) => {
-                        readDate=doc.data()[data.chatId]["readDate"];
-                        unreadCount=doc.data()[data.chatId]["unreadCount"];
-                    });
-                    if (readDate > date){
+                    // const unsub=
+                    const docSnap=await getDoc(doc(db, "userChats", obj[1].userInfo.uid));
+                    readDate=docSnap.data()[data.chatId]["readDate"];
+                    unreadCount=docSnap.data()[data.chatId]["unreadCount"];
+                    // unsub();
+                    if (readDate < date){
                         await updateDoc(doc(db, "userChats", obj[1].userInfo.uid),{
-                            [data.chatId+".lastMessage"]: {text:`${user.displayName}傳送了圖片`},
+                            [data.chatId+".lastMessage"]: {text:`${user.displayName}傳送了檔案`},
                             [data.chatId+".date"]: date,
                             [data.chatId+".unreadCount"]: unreadCount+1,
                             [data.chatId+".member."+user.uid+".readDate"]: date,
                         });
                     }else{
                         await updateDoc(doc(db, "userChats", obj[1].userInfo.uid),{
-                            [data.chatId+".lastMessage"]: {text:`${user.displayName}傳送了圖片`},
+                            [data.chatId+".lastMessage"]: {text:`${user.displayName}傳送了檔案`},
                             [data.chatId+".date"]: date,
                             [data.chatId+".member."+user.uid+".readDate"]: date,
                         });
@@ -207,20 +209,24 @@ export default function  ChatroomInput()  {
 
 
             Object.entries(data.member).forEach(async (obj)=>{
+                console.log(obj);
                 if(obj[1].userInfo.uid !== user.uid){
                     let readDate=new Date();
                     let unreadCount = 0;                    
-                    onSnapshot(doc(db, "userChats", obj[1].userInfo.uid), (doc) => {
-                        readDate=doc.data()[data.chatId]["readDate"];
-                        unreadCount=doc.data()[data.chatId]["unreadCount"];
-                    });
-                    if (readDate > date){
+
+                    const docSnap=await getDoc(doc(db, "userChats", obj[1].userInfo.uid));
+                    readDate=docSnap.data()[data.chatId]["readDate"];
+                    unreadCount=docSnap.data()[data.chatId]["unreadCount"];
+
+                    if (Number(readDate) < Number(date)){
+                        console.log("unreadCount++");
                         await updateDoc(doc(db, "userChats", obj[1].userInfo.uid),{
                             [data.chatId+".lastMessage"]: {text: `${user.displayName}: ${text}`},
                             [data.chatId+".date"]: date,
                             [data.chatId+".unreadCount"]: unreadCount+1,
                             [data.chatId+".member."+user.uid+".readDate"]: date,
                         });
+                        
                     }else{
                         await updateDoc(doc(db, "userChats", obj[1].userInfo.uid),{
                             [data.chatId+".lastMessage"]: {text: `${user.displayName}: ${text}`},

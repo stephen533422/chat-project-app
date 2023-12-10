@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from "@/app/chats/chatPage.module.scss"
 import classnames from 'classnames';
 import { AuthContext } from '@/context/AuthContext';
@@ -6,10 +6,13 @@ import { ChatContext } from '@/context/ChatContext';
 import Link from 'next/link';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { UsersContext } from '@/context/UsersContext';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@/firebase/config';
 
-const Message = ({message}) => {
+const Message = ({message,chatroom}) => {
     const {user} = useContext(AuthContext);
     const {data} = useContext(ChatContext);
+
     const {users} = useContext(UsersContext);
     const [ count, setCount ] = useState(0);
     // console.log("count: ", count);
@@ -18,16 +21,21 @@ const Message = ({message}) => {
 
     useEffect(() => {
         // console.log(ref.current);
-        let newCount = 0;
-        Object.entries(data.member).map((arr)=>{
-            if(arr[1].readDate > message.date){
-                newCount=newCount+1;
-                setCount(newCount);
-            }
-        })
         // console.log("count: ",count);
         ref.current?.scrollIntoView({ behavior: 'auto' });
     },[message]);
+    useEffect(()=>{
+        // console.log(data.chatId);
+        let newCount = 0;
+        if(chatroom){
+            Object.entries(chatroom.member).map((arr)=>{
+                if(arr[1].readDate > message.date){
+                    newCount=newCount+1;
+                    setCount(newCount);
+                }
+            })
+        }
+    },[chatroom]);
     // console.log(data);
     // console.log("Message.js > message",message);
     return(
@@ -73,7 +81,7 @@ const Message = ({message}) => {
                 <div className={styles.messageTime}>
                     {data.chatroomInfo.type==="private" && message.senderId === user.uid &&
                         <span>
-                            {Object.entries(data.member)[0][1].readDate > message.date 
+                            {count===1 
                                 ? "已讀"
                                 : "未讀"
                             }
