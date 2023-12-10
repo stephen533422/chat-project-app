@@ -7,9 +7,11 @@ import { ChatContext } from "@/context/ChatContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { UsersContext } from "@/context/UsersContext";
 import classnames from "classnames";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function  Chatlist()  {
-    const [chatlists, setChatlists] = useState([]);
+    const [chatlists, setChatlists] = useState(null);
     const [loading, setLoading] = React.useState(true);
 
     const {user} = useContext(AuthContext);
@@ -22,13 +24,13 @@ export default function  Chatlist()  {
                 // console.log(doc.data());
                 setChatlists(Object.entries(doc.data())?.sort((a,b)=>b[1].date - a[1].date));
             });
-            setLoading(false);
             return ()=>{
                 unsub();
             };
         };
     if(user)
         user.uid && getChatlists();
+    setLoading(false);
     },[user]);
 
     const handleSelect = async(u)=>{
@@ -60,6 +62,22 @@ export default function  Chatlist()  {
 
     return (
         <div className={styles.chatlist}>
+            {!chatlists && 
+                <div className={styles.chat} >
+                    <Skeleton 
+                        circle={true}
+                    />
+                <div className={styles.chatInfo}>
+                    <div className={classnames(styles.name)}>
+                        <Skeleton height={"100%"} width={"50%"}/>
+                    </div>
+                    <div className={styles.info}>
+                        <span className={classnames(styles.text)}>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            }
             {chatlists && chatlists?.map(chat=>{
                 // console.log("Chats.js chat: ",chat);
                 // console.log(users[Object.entries(chat[1].member)[0][0]].displayName);
@@ -95,6 +113,9 @@ export default function  Chatlist()  {
                     </div>
                 );
             })}
+            {
+                chatlists && Object.keys(chatlists).length===0 && <div className={styles.null}>未有聊天紀錄</div>
+            }
         </div>
     );
 };

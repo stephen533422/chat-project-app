@@ -8,9 +8,12 @@ import {v4 as uuid} from "uuid";
 import { useRouter } from "next/navigation";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { UsersContext } from "@/context/UsersContext";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function  Friendlist()  {
-    const [friendlist, setFriendlist] = useState([]);
+    const [friendlist, setFriendlist] = useState(null);
+    const [loading, setLoading] = React.useState(true);
 
     const {user} = useContext(AuthContext);
     const {dispatch} = useContext(FriendContext);
@@ -29,6 +32,7 @@ export default function  Friendlist()  {
         };
         if(user)
             user.uid && getFriendlist();
+        setLoading(false);
     },[user]);
 
     const handleSelect = (u)=>{
@@ -124,18 +128,34 @@ export default function  Friendlist()  {
         }
     }
 
-    if(friendlist && Object.keys(friendlist).length===0){
-        return(
-            <div className={styles.chatlist}>
-                <div className={styles.null}>添加好友開始聊天</div>
-            </div>
-        ); 
-    }
+    // if(!loading && friendlist && Object.keys(friendlist).length===0){
+    //     return(
+    //         <div className={styles.chatlist}>
+    //             <div className={styles.null}>添加好友開始聊天</div>
+    //         </div>
+    //     ); 
+    // }
 
     console.log("friendlist:",friendlist);
     return (
         <div className={styles.chatlist}>
-            {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
+            {!friendlist && 
+                <div className={styles.chat} >
+                    <Skeleton 
+                        circle={true}
+                    />
+                <div className={styles.chatInfo}>
+                    <div className={styles.name}>
+                        <Skeleton height={"100%"} width={"50%"}/>
+                    </div>
+                    <div className={styles.info}>
+                        <span className={styles.text}>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            }
+            { friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
                 // console.log("friend: ",friend);
                 return (
                     <div className={styles.chat} key={friend[0]} onClick={()=>handleSelect(friend[1])}>
@@ -156,6 +176,9 @@ export default function  Friendlist()  {
                     </div>
                 );
             })}
+            {
+                friendlist && Object.keys(friendlist).length===0 && <div className={styles.null}>添加好友開始聊天123</div>
+            }
         </div>
     );
 };

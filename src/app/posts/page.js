@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 
 
 function Page() {
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState(null);
     const { user } = useContext(AuthContext);
     const router = useRouter();
     
