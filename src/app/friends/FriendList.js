@@ -177,7 +177,7 @@ export default function  Friendlist()  {
                 );
             })}
             {
-                friendlist && Object.keys(friendlist).length===0 && <div className={styles.null}>添加好友開始聊天123</div>
+                friendlist && Object.keys(friendlist).length===0 && <div className={styles.null}>添加好友開始聊天</div>
             }
         </div>
     );
