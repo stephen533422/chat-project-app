@@ -22,6 +22,7 @@ export default function Page() {
         if (error) {
             setError(error);
             console.log(error);
+            setLoading(false);
             return;
         }
         // else successful
