@@ -288,7 +288,11 @@ export default function  ChatroomInput()  {
                     <label htmlFor="file">
                         <img src="/attach.png" alt="" />
                     </label>
-                    <button onClick={handleSend}>Send</button>
+                    {
+                        (text || file) 
+                            ? <button onClick={handleSend}>Send</button>
+                            : <button style={{backgroundColor: "#f0f2f5", cursor:"none"}}>Send</button>
+                    }
                 </div>
             </div>
         </div>
