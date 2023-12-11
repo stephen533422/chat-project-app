@@ -573,9 +573,7 @@
         justify-content: center;
         display: flex;
         align-items: center;
-        &:hover{
-          opacity: 0.8;
-        }
+
         img{
           width: 20px;
           height: 20px;
@@ -590,6 +588,9 @@
       }
       .pointer{
         cursor: pointer;
+        &:hover{
+          opacity: 0.8;
+        }
       } 
     }
   }

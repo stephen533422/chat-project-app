@@ -105,7 +105,11 @@ function NewPost() {
                                 <img src="/img.png" alt="" />
                                 加入圖片
                             </label>
-                        <button className={classNames(styles.btn,styles.pointer,styles.bc_blue)} onClick={handlePost}>發布</button>
+                        {
+                            (text || file) 
+                            ? <button className={classNames(styles.btn,styles.pointer,styles.bc_blue)} onClick={handlePost}>發布</button>
+                            : <button className={classNames(styles.btn,styles.bc_gray)} >發布</button>
+                        }
                     </div>
                 </div>
             </div>
