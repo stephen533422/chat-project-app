@@ -98,7 +98,7 @@ function Page() {
     };
     const handleUpload=async (type)=>{
         setLoading(true);
-        const storageRef =  ref(storage, user.email);
+        const storageRef =  ref(storage, `${user.email}/${type}`);
         switch(type){
             case "background":
                 uploadBytesResumable(storageRef, background).then(() => {
