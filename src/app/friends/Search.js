@@ -9,22 +9,36 @@ import classNames from "classnames";
 export default function Search()  {
     const [search, setSearch] = useState("");
     const [result, setResult] = useState(null);
-    const [requestList, setRequestList] = useState([]);
+    const [friendsRequestList, setFriendsRequestList] = useState([]);
+    const [friendsList, setFriendsList] = useState([]);
     const [err, setErr] = useState(false);
 
     const {user} = useContext(AuthContext);
 
     useEffect(() => {
-        const getRequestlist = ()=>{
+        const getFriendsRequestlist = ()=>{
             const unsub = onSnapshot(doc(db, "userFriendsRequest", user.uid), (doc) => {
-                setRequestList(doc.data());
+                setFriendsRequestList(doc.data());
             });
             return ()=>{
                 unsub();
             };
         };
         if(user)
-            user.uid && getRequestlist();
+            user.uid && getFriendsRequestlist();
+    },[user]);
+
+    useEffect(() => {
+        const getFriendsList = ()=>{
+        const unsub = onSnapshot(doc(db, "userFriends", user.uid), (doc) => {
+            setFriendsList(doc.data());
+        });
+        return ()=>{
+            unsub();
+        };
+    };
+    if(user)
+        user.uid && getFriendsList();
     },[user]);
 
     const handleSearch = async() => {
@@ -99,9 +113,11 @@ export default function Search()  {
                             <div className={styles.name}>{result.displayName}</div>
                             <div className={styles.info}><span>{result.email}</span></div>
                         </div>
-                        { requestList.send && Object.keys(requestList.send).includes(result.uid) 
-                          ? <div className={styles.btn}>已邀請</div>
-                          : result.uid!==user.uid && <div className={classNames(styles.btn, styles.pointer)} onClick={handleSelect}>加好友</div>
+                        {  friendsList && Object.keys(friendsList).includes(result.uid) 
+                            ? <div className={styles.btn}>好友</div>
+                            : friendsRequestList.send && Object.keys(friendsRequestList.send).includes(result.uid) 
+                                ? <div className={styles.btn}>已邀請</div>
+                                : result.uid!==user.uid && <div className={classNames(styles.btn, styles.pointer)} onClick={handleSelect}>加好友</div>
                         }
                     </div>
             }

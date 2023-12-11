@@ -8,23 +8,23 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { UsersContext } from "@/context/UsersContext";
 
 export default function  FriendRequest()  {
-    const [friendlist, setFriendlist] = useState([]);
+    const [friendRequestList, setFriendRequestList] = useState([]);
     const [err,setErr] = useState(false);
 
     const {user} = useContext(AuthContext);
     const {users} = useContext(UsersContext);
 
     useEffect(() => {
-        const getFriendlist = ()=>{
+        const getFriendRequestList = ()=>{
         const unsub = onSnapshot(doc(db, "userFriendsRequest", user.uid), (doc) => {
-            setFriendlist(doc.data().request);
+            setFriendRequestList(doc.data());
         });
         return ()=>{
             unsub();
         };
     };
     if(user)
-        user.uid && getFriendlist();
+        user.uid && getFriendRequestList();
     },[user]);
 
     const handleAccept = async(uid) => {
@@ -54,7 +54,7 @@ export default function  FriendRequest()  {
         }
     };
 
-    if(!friendlist || Object.keys(friendlist).length===0){
+    if(!friendRequestList.request || Object.keys(friendRequestList.request).length===0){
         return(
             <div className={styles.chatlist}>
                 <div className={styles.null}>沒有好友邀請</div>
@@ -62,10 +62,10 @@ export default function  FriendRequest()  {
         ); 
     }
 
-    console.log("friendlist:",friendlist);
+    console.log("friendlist:",friendRequestList);
     return (
         <div className={styles.chatlist}>
-            {friendlist && Object.entries(friendlist)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
+            {friendRequestList.request && Object.entries(friendRequestList.request)?.sort((a,b)=>b[1].date - a[1].date).map(friend=>{
                 // console.log("friend: ",friend);
                 return (
                     <div className={styles.chat} key={friend[0]}>
