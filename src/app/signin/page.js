@@ -27,7 +27,7 @@ export default function Page() {
         }
         // else successful
         //console.log(result)
-        router.push("/");
+        router.push("/home");
     }
 
     return (

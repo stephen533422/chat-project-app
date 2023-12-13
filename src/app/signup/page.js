@@ -45,7 +45,7 @@ export default function Page(){
                     await storeData("userChats", result.user.uid, {});
                     await storeData("userFriends", result.user.uid, {});
                     await storeData("userFriendsRequest", result.user.uid, {});
-                    router.push("/");
+                    router.push("/home");
                 });
             });
         }
