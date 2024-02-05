@@ -1,7 +1,9 @@
 # InstantChat
 A real-time chatroom web application.
 ### demo: https://chat-project-app.vercel.app/
-![螢幕擷取畫面 2023-12-15 011239](https://github.com/stephen533422/chat-project-app/assets/44090848/9348496f-3f07-42ab-9edf-afdd1ca55d4a)
+![smartmockups_ls95e1xo](https://github.com/stephen533422/chat-project-app/assets/44090848/bfda8602-1a65-4d45-b292-baa1f1c133f3)
+![螢幕擷取畫面 2023-12-24 165517](https://github.com/stephen533422/chat-project-app/assets/44090848/38fda82e-65f6-4ccd-8e40-c3b8b4813a13)
+![螢幕擷取畫面 2023-12-24 165724](https://github.com/stephen533422/chat-project-app/assets/44090848/87e39ca4-978d-4fe9-ad73-6d60c6872f71)
 ## Technology Stack:
 * Next.js: framework.
 * React.js: ```useEffect```, ```useState```, ```useLayoutEffect```, ```useContext```, ```useReducer```
@@ -22,5 +24,4 @@ A real-time chatroom web application.
 * Send text, image or file in chatroom.
 * Create a post, like a post and comment on a post.
 * Edit your profile info.
-![螢幕擷取畫面 2023-12-24 165517](https://github.com/stephen533422/chat-project-app/assets/44090848/38fda82e-65f6-4ccd-8e40-c3b8b4813a13)
-![螢幕擷取畫面 2023-12-24 165724](https://github.com/stephen533422/chat-project-app/assets/44090848/87e39ca4-978d-4fe9-ad73-6d60c6872f71)
+
