@@ -172,7 +172,7 @@ export default function  ChatroomBar()  {
     // console.log(member);
     for(let i=0; i<e.target.length-1; i++)
     {
-        if(e.target[i].type === "checkbox"){
+        if(e.target[i].type === "checkbox" && e.target[i].checked){
             member=Object.assign(member,{
                 [e.target[i].dataset.uid] :{
                     userInfo:{

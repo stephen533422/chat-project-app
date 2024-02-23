@@ -41,7 +41,7 @@ export default function CreateGroupChat()  {
         let member={};
         for(let i=2; i<e.target.length; i++)
         {
-            if(e.target[i].type === "checkbox"){
+            if(e.target[i].type === "checkbox" && e.target[i].checked){
                 member=Object.assign(member,{
                     [e.target[i].dataset.uid] :{
                         userInfo:{
